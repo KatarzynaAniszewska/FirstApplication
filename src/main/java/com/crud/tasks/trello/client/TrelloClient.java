@@ -15,6 +15,8 @@ import java.util.Optional;
 
 @Component
 public class TrelloClient {
+
+
     @Value("${trello.api.endpoint.prod}")
     private String trelloApiEndpoint;
 
@@ -30,15 +32,19 @@ public class TrelloClient {
     @Autowired
     private RestTemplate restTemplate;
 
-    public Optional<List<TrelloBoardDto>> getTrelloBoards() {
+    /*public Optional<List<TrelloBoardDto>> getTrelloBoards() {
 
         TrelloBoardDto[] boardsResponse = restTemplate.getForObject(buildURL(), TrelloBoardDto[].class);
         List<TrelloBoardDto> listBoardsResponse = Arrays.asList(boardsResponse);
 
         return Optional.of(listBoardsResponse);
+    }*/
+    public  List<TrelloBoardDto> getTrelloBoards() {
+        TrelloBoardDto[] boardsResponse = restTemplate.getForObject(buildURL(), TrelloBoardDto[].class);
+
+        return Arrays.asList(Optional.ofNullable(boardsResponse).orElse(new TrelloBoardDto[0]));
+
     }
-
-
         private URI buildURL(){
         URI url = UriComponentsBuilder.fromHttpUrl((trelloApiEndpoint)+"members/katarzynawojcik13/boards")
                 //.queryParam("username",trelloUserName)
