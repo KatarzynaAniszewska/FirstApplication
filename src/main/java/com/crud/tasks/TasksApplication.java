@@ -9,8 +9,8 @@ import javax.servlet.annotation.WebServlet;
 
 
 @SpringBootApplication
-public class
-TasksApplication extends SpringBootServletInitializer
+public class TasksApplication
+//extends SpringBootServletInitializer
  {
 
 	public static void main(String[] args) {
@@ -18,7 +18,7 @@ TasksApplication extends SpringBootServletInitializer
 		SpringApplication.run(TasksApplication.class, args);
 
 	}
-	@Override
+	/*@Override
 	protected SpringApplicationBuilder configure (SpringApplicationBuilder application){
-		return application.sources(TasksApplication.class); }
+		return application.sources(TasksApplication.class); }*/
 }
