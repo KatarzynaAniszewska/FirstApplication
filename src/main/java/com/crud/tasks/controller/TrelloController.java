@@ -4,6 +4,7 @@ import com.crud.tasks.domain.CreatedTrelloCard;
 import com.crud.tasks.domain.TrelloBoardDto;
 import com.crud.tasks.domain.TrelloCardDto;
 import com.crud.tasks.domain.TrelloListDto;
+import com.crud.tasks.service.TrelloService;
 import com.crud.tasks.trello.client.TrelloClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +17,11 @@ import java.util.List;
 public class TrelloController {
 
     @Autowired
-    private TrelloClient trelloClient;
+    private TrelloService trelloService;
 
     @RequestMapping(method = RequestMethod.GET, value = "getTrelloBoards")
     public List<TrelloBoardDto> getTrelloBoards() {
-        List<TrelloBoardDto> trelloBoards= trelloClient.getTrelloBoards();
+        List<TrelloBoardDto> trelloBoards= trelloService.fetchTrelloBoards();
 
         /*trelloBoards.stream()
                 .filter(i->i.getId()!= null)
@@ -43,13 +44,11 @@ public class TrelloController {
 
     @RequestMapping (method = RequestMethod.POST,value = "createTrelloCard")
     public CreatedTrelloCard createTrelloCard(@RequestBody TrelloCardDto trelloCardDto){
-        CreatedTrelloCard trelloCard = trelloClient.createNewCard(trelloCardDto);
-        System.out.println (trelloCard.getId() + " " + trelloCard.getName() + " " + trelloCard.getShortUrl());
+        return trelloService.createdTrelloCard(trelloCardDto);
 
         // System.out.println(trelloCard.getTrelloBadgesDto().getAttachmentsByTypeDto().getTrelloDto().getBoard());
         //System.out.println(trelloCard.getTrelloBadgesDto().getAttachmentsByTypeDto().getTrelloDto().getCard());
 
-        return trelloCard;
     }
 
 }
