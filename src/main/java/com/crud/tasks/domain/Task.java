@@ -11,6 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity(name = "tasks")
 public class Task {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -19,4 +20,6 @@ public class Task {
     private String title;
     @Column(name="description")
     private String content;
+
+
 }

@@ -13,7 +13,7 @@ public class DbService {
     @Autowired
     private TaskRepository repository;
 
-    public List<Task>getAllTasks(){
+    public List<Task>getAllTasks() {
         return repository.findAll();
     }
     public Task getTaskById(Long id){
@@ -22,11 +22,9 @@ public class DbService {
     public Task saveTask (final Task task){
         return repository.save(task);
     }
-
-    public Optional<Task>getTask(final Long id){
+    public Optional<Task> getTask(final Long id){
         return repository.findById(id);
     }
-
     public void deleteById(final Long id){
         repository.deleteById(id);
     }
