@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import static sun.security.x509.X509CertInfo.SUBJECT;
+
 @Component
 
 
-public class EmailScheduler  {
+public class EmailScheduler {
 
     @Autowired
     private SimpleEmailService simpleEmailService;
@@ -22,21 +24,23 @@ public class EmailScheduler  {
     @Autowired
     private AdminConfig adminConfig;
 
-    private static final String SUBJECT="Tasks: Once a day email";
-    @Scheduled(fixedDelay = 10000)
+    //private static final String SUBJECT="Tasks: Once a day email";
+    //@Scheduled(fixedDelay = 10000)
     @Scheduled(cron = "0 0 10 * * *")
-    public void sendInformationEmail(){
+    public void sendInformationEmail() {
         long size = taskRepository.count();
-        String message="";
-        if (size==1){
-            message = "Currently in database you got: "+size +" task";
-        } else {
-            message = "Currently in database you got: "+size +" tasks";
-        }
+        String message = "";
+        message = "Currently in database you got: " + size + (size == 1 ? "task" : "tasks");
         simpleEmailService.send(new Mail(
                 adminConfig.getAdminMail(),
                 SUBJECT,
                 message)
         );
     }
+    @Scheduled(cron = "0 0 10 * * *")
+    public void sendMail() {
+
+        simpleEmailService.sendTaskMail(new Mail());
+    }
 }
+

@@ -8,19 +8,20 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 
+
 public class AdminConfig {
 
     @Value("${admin.mail}")
     private String adminMail;
     @Value("${admin.name}")
     private String adminName;
-    @Value("${company.name}")
+    @Value("${info.company.name}")
     private String companyName;
-    @Value("${company.goal}")
+    @Value("${info.company.goal}")
     private String companyGoal;
-    @Value("${company.email}")
+    @Value("${info.company.email}")
     private String companyEmail;
-    @Value("${company.phone}")
+    @Value("${info.company.phone}")
     private String companyPhone;
 
 

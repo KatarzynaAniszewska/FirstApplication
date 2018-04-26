@@ -14,46 +14,64 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.mail.internet.MimeMessage;
+import java.util.Date;
 
 @Service
 
 public class SimpleEmailService {
 
-     private static final Logger LOGGER=LoggerFactory.getLogger(SimpleMailMessage.class);
+    private static final Logger LOGGER=LoggerFactory.getLogger(SimpleMailMessage.class);
 
-     @Autowired
-     private JavaMailSender javaMailSender;
-     @Autowired
-     private MailCreatorService mailCreatorService;
+    @Autowired
+    private JavaMailSender javaMailSender;
+    @Autowired
+    private MailCreatorService mailCreatorService;
 
-     public void send(final Mail mail) {
-         LOGGER.info("Strating email preparation...");
-         try {
-             SimpleMailMessage mailMessage = createMailMessage(mail);
-             javaMailSender.send(createMimeMessage(mail));
-             LOGGER.info("Email has been sent.");
-         } catch (MailException e) {
-             LOGGER.error("Failed to process email sending: ",e.getMessage(),e);
-         }
-     }
+    public void send(final Mail mail) {
+        LOGGER.info("Strating email preparation...");
+        try {
+            SimpleMailMessage mailMessage = createMailMessage(mail);
+            javaMailSender.send(mailMessage);
+            LOGGER.info("Email has been sent.");
+        } catch (MailException e) {
+            LOGGER.error("Failed to process email sending: ",e.getMessage(),e);
+        }
+    }
+    public void sendTaskMail(final Mail mail) {
+        LOGGER.info("Strating email preparation...");
+        try {
+            MimeMessagePreparator mailMessage = createSecondMimeMessage(mail);
+            javaMailSender.send(mailMessage);
+            LOGGER.info("Email has been sent.");
+        } catch (MailException e) {
+            LOGGER.error("Failed to process email sending: ",e.getMessage(),e);
+        }
+    }
 
-     private SimpleMailMessage createMailMessage(final Mail mail){
-         SimpleMailMessage mailMessage = new SimpleMailMessage();
-         mailMessage.setTo(mail.getMailTo());
-         mailMessage.setSubject(mail.getSubject());
-         mailMessage.setText(mail.getSubject());
-         if (mail.getToCc()!=null){
-             mailMessage.setCc(mail.getToCc());
-         }
-         return mailMessage;
-     }
-     private MimeMessagePreparator createMimeMessage(final Mail mail) {
-         return mimeMessage -> {
-             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-             messageHelper.setTo(mail.getMailTo());
-             messageHelper.setSubject(mail.getSubject());
-             messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()),true);
-         };
-     }  
-
- }
+    private SimpleMailMessage createMailMessage(final Mail mail){
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(mail.getMailTo());
+        mailMessage.setSubject(mail.getSubject());
+        mailMessage.setText(mail.getSubject());
+        if (mail.getToCc()!=null){
+            mailMessage.setCc(mail.getToCc());
+        }
+        return mailMessage;
+    }
+    private MimeMessagePreparator createMimeMessage(final Mail mail) {
+        return mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            messageHelper.setTo(mail.getMailTo());
+            messageHelper.setSubject(mail.getSubject());
+               messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()),true);
+        };
+    }
+    private MimeMessagePreparator createSecondMimeMessage(final Mail mail) {
+        return mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            messageHelper.setTo(mail.getMailTo());
+            messageHelper.setSubject(mail.getSubject());
+            messageHelper.setText(mailCreatorService.buildTaskEmail(mail.getMessage()),true);
+        };
+    }
+}
