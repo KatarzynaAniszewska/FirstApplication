@@ -9,7 +9,7 @@ import javax.servlet.annotation.WebServlet;
 
 
 @SpringBootApplication
-public class TasksApplication {gi//extends SpringBootServletInitializer {
+public class TasksApplication {//extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 
