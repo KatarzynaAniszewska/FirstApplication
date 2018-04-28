@@ -63,8 +63,7 @@ public class TaskControllerTest {
         when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
 
         //When & Then
-        mockMvc.perform(get("/v1/tasks")
-                .param("taskId","1")
+        mockMvc.perform(get("/v1/tasks/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200))//or isOK()
                 .andExpect(jsonPath("$.title", is("TaskDto TestTitle")));
@@ -72,9 +71,10 @@ public class TaskControllerTest {
     @Test
     public void deleteTaskTest() throws Exception {
         //Given
-        //service.deleteById(1L);
+        service.deleteById(1L);
         //When & Then
-        mockMvc.perform(delete("/v1/tasks?taskId=1").contentType(MediaType.APPLICATION_JSON))
+
+        mockMvc.perform(delete("/v1/tasks/1"))
                 .andExpect(status().is(200));//or isOK
     }
     @Test
